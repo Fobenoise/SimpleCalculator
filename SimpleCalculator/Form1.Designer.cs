@@ -69,6 +69,7 @@ namespace SimpleCalculator
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(63, 63);
             this.button1.TabIndex = 11;
+            this.button1.Tag = "";
             this.button1.Text = "7";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.parameter_Click);
@@ -414,6 +415,7 @@ namespace SimpleCalculator
             this.display.Text = "0";
             this.display.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.display.WordWrap = false;
+            this.display.TextChanged += new System.EventHandler(this.display_TextChange);
             // 
             // intel
             // 

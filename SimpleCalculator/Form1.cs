@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SimpleCalculator
@@ -22,20 +15,21 @@ namespace SimpleCalculator
         string operation;
         bool isOperPerf = false;
         bool isFirstPerformed = false;
+        bool error = false;
         int eqCount = 0;
-      
+
         private void parameter_Click(object sender, EventArgs e)
         {
             Button BtnVal = (Button)sender;
 
-            if (display.Text == "0" && BtnVal.Text != "." || isOperPerf) //usuwanie zera po kliknieciu cyfry
+            if (display.Text == "0" && BtnVal.Text != "." || isOperPerf || error) //usuwanie zera po kliknieciu cyfry
             {
                 if (BtnVal.Text == ".")
                 {
                     display.Text = 0 + BtnVal.Text; // dodanie zera przy wcisnieciu kropki po opreratorze
                 }
                 else
-                    display.Clear();
+                    display.Clear(); error = false;
             }
             isOperPerf = false;
 
@@ -54,7 +48,7 @@ namespace SimpleCalculator
         private void oper_Click(object sender, EventArgs e)
         {
             eqCount = 0;
-            if (isOperPerf && intel.Text.Contains(operation))
+            if (isOperPerf && intel.Text.Contains(operation) || error)
             {
                 return;
             }
@@ -67,36 +61,35 @@ namespace SimpleCalculator
             if (isFirstPerformed)
             {
                 y = Double.Parse(display.Text);
-                var calculate = new Calculate();
+                var calculate = new Calculation();
 
                 if (operation.Contains("+"))
                 {
                     var result = calculate.Add(x, y);
                     x = result;
                     display.Text = result.ToString();
-                    intel.Text = display.Text + operClick.Text;
                 }
                 if (operation.Contains("-"))
                 {
                     var result = calculate.Subtract(x, y);
                     x = result;
                     display.Text = result.ToString();
-                    intel.Text = display.Text + operClick.Text;
                 }
                 if (operation.Contains("×"))
                 {
                     var result = calculate.Multiply(x, y);
                     x = result;
                     display.Text = result.ToString();
-                    intel.Text = display.Text + operClick.Text;
                 }
                 if (operation.Contains("÷"))
                 {
                     var result = calculate.Subtract(x, y);
                     x = result;
                     display.Text = result.ToString();
-                    intel.Text = display.Text + operClick.Text;
                 }
+                if (error) eMssg();
+
+                intel.Text = display.Text + operClick.Text;
                 return;
             }
             isFirstPerformed = true;
@@ -115,7 +108,7 @@ namespace SimpleCalculator
             isFirstPerformed = false;
 
             eqCount += 1;
-            var calculate = new Calculate();            
+            var calculate = new Calculation();
 
             if (eqCount == 1)
             {
@@ -124,36 +117,39 @@ namespace SimpleCalculator
             }
             if (eqCount > 1)
             {
-                x = double.Parse(display.Text);
+                if (display.Text.Length > 18 || error) return;
+                else
+                    x = double.Parse(display.Text);
             }
             if (op.Contains("+"))
             {
-                var result = calculate.Add(x, y);                
+                var result = calculate.Add(x, y);
                 display.Text = result.ToString();
+                if (error) return;
                 intel.Text = display.Text + op;
-                return;
             }
             if (op.Contains("-"))
             {
                 var result = calculate.Subtract(x, y);
                 display.Text = result.ToString();
+                if (error) return;
                 intel.Text = display.Text + op;
-                return;
             }
             if (op.Contains("×"))
             {
                 var result = calculate.Multiply(x, y);
                 display.Text = result.ToString();
+                if (error) return;
                 intel.Text = display.Text + op;
-                return;
             }
             if (op.Contains("÷"))
             {
                 var result = calculate.Divide(x, y);
                 display.Text = result.ToString();
+                if (error) return;
                 intel.Text = display.Text + op;
-                return;
             }
+            return;
         }
         private void Clear_Click(object sender, EventArgs e)
         {
@@ -164,6 +160,7 @@ namespace SimpleCalculator
             isOperPerf = false;
             display.Text = "0";
             intel.Text = string.Empty;
+            error = false;
             return;
         }
         private void CE_Click(object sender, EventArgs e)
@@ -173,22 +170,35 @@ namespace SimpleCalculator
         }
         private void polarity_Click(object sender, EventArgs e)
         {
-            var calculate = new Calculate();
+            var calculate = new Calculation();
+            if (error) return;
             x = Double.Parse(display.Text);
             var result = calculate.signChange(x);
             x = result;
             display.Text = result.ToString();
             eqCount = 0;
         }
-
         private void reciprocal_click(object sender, EventArgs e)
         {
-            var calculate = new Calculate();
+            var calculate = new Calculation();
+            if (error) return;
             x = Double.Parse(display.Text);
             var result = calculate.Reciprocal(x);
             x = result;
             display.Text = result.ToString();
             eqCount = 0;
+        }
+        private void display_TextChange(object sender, EventArgs e)
+        {
+            if (display.Text.Length > 18 || display.Text == "error")
+                eMssg();
+        }
+        private void eMssg()
+        {
+            display.Text = "error";
+            intel.Text = "out of range";
+
+            error = true;
         }
     }
 }
