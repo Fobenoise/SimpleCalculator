@@ -189,16 +189,18 @@ namespace SimpleCalculator
             eqCount = 0;
         }
         private void display_TextChange(object sender, EventArgs e)
-        {
-            if (display.Text.Length > 18 || display.Text == "error")
+        {            
                 eMssg();
         }
         private void eMssg()
         {
-            display.Text = "error";
-            intel.Text = "out of range";
+            if (display.Text.Length > 18 || display.Text == "error")
+            {
+                display.Text = "error";
+                intel.Text = "out of range";
 
-            error = true;
+                error = true;
+            }                
         }
     }
 }
