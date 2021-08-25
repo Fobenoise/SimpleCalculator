@@ -98,11 +98,12 @@ namespace SimpleCalculator
         }
         private void equals_Click(object sender, EventArgs e)
         {
+            if (error) return;
             var tempIntel = intel.Text;
             var r = Regex.Replace(tempIntel, @"(?<=[0-9])[+\-÷×]", string.Empty);
             // zamiana znakow nastepujacuch po liczbie na pusty string
 
-            var op = Regex.Replace(tempIntel, @"((?!\+|-÷×)[-0-9.])", string.Empty);
+            var op = Regex.Replace(tempIntel, @"((.?[0-9.])(?!\+-÷×))", string.Empty);
             // wyodrebnienie operacji z labelki intel
 
             isOperPerf = true;
