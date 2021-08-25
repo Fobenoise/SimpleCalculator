@@ -20,6 +20,7 @@ namespace SimpleCalculator
 
         private void parameter_Click(object sender, EventArgs e)
         {
+            if (error) return;
             Button BtnVal = (Button)sender;
 
             if (display.Text == "0" && BtnVal.Text != "." || isOperPerf || error) //usuwanie zera po kliknieciu cyfry
@@ -118,7 +119,7 @@ namespace SimpleCalculator
             if (eqCount > 1)
             {
                 if (display.Text.Length > 18 || error) return;
-                else
+                
                     x = double.Parse(display.Text);
             }
             if (op.Contains("+"))
