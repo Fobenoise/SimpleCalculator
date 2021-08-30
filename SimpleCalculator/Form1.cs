@@ -18,6 +18,8 @@ namespace SimpleCalculator
         bool error = false;
         int eqCount = 0;
 
+        Calculation calculation = new Calculation();
+
         private void parameter_Click(object sender, EventArgs e)
         {
             if (error) return;
@@ -61,30 +63,29 @@ namespace SimpleCalculator
 
             if (isFirstPerformed)
             {
-                y = Double.Parse(display.Text);
-                var calculate = new Calculation();
+                y = Double.Parse(display.Text);               
 
                 if (operation.Contains("+"))
                 {
-                    var result = calculate.Add(x, y);
+                    var result = calculation.Add(x, y);
                     x = result;
                     display.Text = result.ToString();
                 }
                 if (operation.Contains("-"))
                 {
-                    var result = calculate.Subtract(x, y);
+                    var result = calculation.Subtract(x, y);
                     x = result;
                     display.Text = result.ToString();
                 }
                 if (operation.Contains("×"))
                 {
-                    var result = calculate.Multiply(x, y);
+                    var result = calculation.Multiply(x, y);
                     x = result;
                     display.Text = result.ToString();
                 }
                 if (operation.Contains("÷"))
                 {
-                    var result = calculate.Subtract(x, y);
+                    var result = calculation.Subtract(x, y);
                     x = result;
                     display.Text = result.ToString();
                 }
@@ -104,13 +105,13 @@ namespace SimpleCalculator
             // zamiana znakow nastepujacuch po liczbie na pusty string
 
             var op = Regex.Replace(tempIntel, @"((.?[0-9.])(?!\+-÷×))", string.Empty);
-            // wyodrebnienie operacji z labelki intel
+            // wyodrebnienie operacji z labelki intel 
 
             isOperPerf = true;
             isFirstPerformed = false;
 
             eqCount += 1;
-            var calculate = new Calculation();
+            
 
             if (eqCount == 1)
             {
@@ -125,28 +126,28 @@ namespace SimpleCalculator
             }
             if (op.Contains("+"))
             {
-                var result = calculate.Add(x, y);
+                var result = calculation.Add(x, y);
                 display.Text = result.ToString();
                 if (error) return;
                 intel.Text = display.Text + op;
             }
             if (op.Contains("-"))
             {
-                var result = calculate.Subtract(x, y);
+                var result = calculation.Subtract(x, y);
                 display.Text = result.ToString();
                 if (error) return;
                 intel.Text = display.Text + op;
             }
             if (op.Contains("×"))
             {
-                var result = calculate.Multiply(x, y);
+                var result = calculation.Multiply(x, y);
                 display.Text = result.ToString();
                 if (error) return;
                 intel.Text = display.Text + op;
             }
             if (op.Contains("÷"))
             {
-                var result = calculate.Divide(x, y);
+                var result = calculation.Divide(x, y);
                 display.Text = result.ToString();
                 if (error) return;
                 intel.Text = display.Text + op;
@@ -171,21 +172,19 @@ namespace SimpleCalculator
             return;
         }
         private void polarity_Click(object sender, EventArgs e)
-        {
-            var calculate = new Calculation();
+        {            
             if (error) return;
             x = Double.Parse(display.Text);
-            var result = calculate.signChange(x);
+            var result = calculation.signChange(x);
             x = result;
             display.Text = result.ToString();
             eqCount = 0;
         }
-        private void reciprocal_click(object sender, EventArgs e)
-        {
-            var calculate = new Calculation();
+        private void Reciprocal_click(object sender, EventArgs e)
+        {            
             if (error) return;
             x = Double.Parse(display.Text);
-            var result = calculate.Reciprocal(x);
+            var result = calculation.Reciprocal(x);
             x = result;
             display.Text = result.ToString();
             eqCount = 0;

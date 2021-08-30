@@ -466,7 +466,7 @@ namespace SimpleCalculator
             this.reciprocalBtn.Tag = "flip";
             this.reciprocalBtn.Text = "1/x";
             this.reciprocalBtn.UseVisualStyleBackColor = true;
-            this.reciprocalBtn.Click += new System.EventHandler(this.reciprocal_click);
+            this.reciprocalBtn.Click += new System.EventHandler(this.Reciprocal_click);
             // 
             // SmplCalc
             // 
